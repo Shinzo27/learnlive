@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const AppBar = () => {
     return (
-        <div className="flex items-center justify-between h-16 px-4 bg-neutral-950 text-white font-bold fixed top-0 left-0 right-0 z-50">
+        <div className="flex items-center justify-between h-16 px-4 bg-neutral-950 text-white font-bold fixed top-0 left-0 right-0 z-50 border-b border-gray-50 border-opacity-10">
             <div className="pl-5 text-2xl">
                 LearnLive
             </div>
