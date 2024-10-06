@@ -40,13 +40,13 @@ const testimonials = [
 
 const LandingPage = () => {
   return (
-    <div className="flex justify-center items-center flex-col pt-64">
+    <div className="flex justify-center items-center flex-col sm:pt-64 pt-52">
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="purple"
       />
-      <div className="sm:flex justify-center items-center text-center flex-col px-4 sm:px-6 lg:px-0">
-        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold font-satoshi text-white text-wrap">
+      <div className="sm:flex w-screen justify-center items-center text-center flex-col px-4 sm:px-6 lg:px-0">
+        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold font-satoshi text-white ">
           Be a 100x, because you are a 100x!
         </div>
         <div className="pt-6 text-lg sm:text-xl lg:text-2xl font-bold text-white font-satoshi">
@@ -59,38 +59,26 @@ const LandingPage = () => {
           </Button>
         </div>
       </div>
-      {/* <section className="container mx-auto px-4 py-10 sm:py-16 lg:py-20 text-center">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 w-full break-words whitespace-normal">
-          Be a 100x, because you are a 100x!
-        </h1>
-        <p className="text-base md:text-lg lg:text-xl text-gray-400 mb-6 sm:mb-8 w-full max-w-2xl mx-auto break-words whitespace-normal">
-          Unlock your potential with LearnLive's expert-led courses. Start your learning journey today!
-        </p>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 md:px-8 md:py-3 rounded-full text-base md:text-lg font-semibold">
-          Explore Courses
-        </Button>
-      </section> */}
-      <div className="flex items-center justify-center pt-20 md:flex-col">
+      <div className="flex items-center justify-center pt-20 flex-col">
         <div className="font-satoshi text-white text-center text-2xl font-bold">
           Why Choose LearnLive?
         </div>
-        <div className="flex justify-center items-center gap-10 pt-10 flex-row">
+        <div className="flex justify-center items-center gap-10 pt-10 flex-col lg:flex-row w-screen px-20">
           <WobbleCard
-            containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
-            className=""
+            containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800  min-h-[400px] lg:min-h-[300px] p-4 lg:p-8 flex justify-center items-center"
           >
-            <div className="max-w-xs">
-              <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+            <div className="w-full md:max-w-md lg:max-w-lg">
+              <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-semibold tracking-tight text-white">
                 Why you should be a 100x?
               </h2>
-              <p className="mt-4 text-left  text-base/6 text-neutral-200">
+              <p className="mt-4 text-left text-sm md:text-base lg:text-lg text-neutral-200 leading-relaxed">
                 Being a 100x means delivering exceptional value, multiplying
                 team impact, and driving innovation far beyond typical
                 contributions.
               </p>
             </div>
           </WobbleCard>
-          <WobbleCard containerClassName="col-span-1 min-h-[300px]">
+          <WobbleCard containerClassName="col-span-1 lg:col-span-2 h-full bg-blue-800 min-h-[500px] lg:min-h-[300px] p-4 lg:p-8 flex justify-center items-center">
             <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
               Why LearnLive?
             </h2>
@@ -102,7 +90,7 @@ const LandingPage = () => {
               everyone.
             </p>
           </WobbleCard>
-          <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
+          <WobbleCard containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px] p-4 lg:p-8 flex justify-center items-center">
             <div className="max-w-sm">
               <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                 Sign-up for LearnLive today!
@@ -120,7 +108,7 @@ const LandingPage = () => {
         <div className="font-satoshi text-white text-center text-2xl font-bold">
           What Our Students Say
         </div>
-        <div className="pt-10">
+        <div className="flex justify-center items-center pt-10 md:pt-8 sm:pt-6 w-screen overflow-hidden">
           <InfiniteMovingCards
             items={testimonials}
             direction="right"

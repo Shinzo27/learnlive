@@ -4,18 +4,18 @@ import Link from "next/link";
 import { useState } from "react";
 
 const AppBar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    
-    const redirectHandler = () => {
-        window.open("https://github.com/Shinzo27/learnlive.git", "_blank");
-    }
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+  const redirectHandler = () => {
+    window.open("https://github.com/Shinzo27/learnlive.git", "_blank");
+  };
 
-    return (
-        <nav className="bg-neutral-950 text-white font-bold">
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <nav className="bg-neutral-950 text-white font-bold">
       <div className="flex items-center justify-between h-16 px-4 sm:px-8">
         {/* Logo Section */}
         <div className="text-2xl pl-5">
@@ -50,7 +50,7 @@ const AppBar = () => {
         </div>
       )}
     </nav>
-    );
-}
+  );
+};
 
 export default AppBar;
