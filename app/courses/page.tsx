@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 
 const page = () => {
   const router = useRouter();
-  const handleRedirect = () => {
-    router.push("/");
+  const handleRedirect = (id: number) => {
+    router.push(`/courseDetail/${id}`);
   };
 
   const courses = [
@@ -41,7 +41,7 @@ const page = () => {
                 <CardSpotlight
                     key={course.id}
                     className="h-96 w-96 border-white border-4 cursor-pointer"
-                    onClick={handleRedirect}
+                    onClick={()=>handleRedirect(course.id)}
                 >
                     <Image
                         className="relative z-50"
