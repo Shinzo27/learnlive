@@ -36,6 +36,7 @@ const AppBar = () => {
           </button>
           <Link href="/courses">Courses</Link>
           <Link href="/about">About</Link>
+          <Link href="/signin">Signin</Link>
         </div>
       </div>
 
@@ -47,6 +48,7 @@ const AppBar = () => {
           </button>
           <Link href="/courses">Courses</Link>
           <Link href="/about">About</Link>
+          <Link href="/signin">Signin</Link>
         </div>
       )}
     </nav>
