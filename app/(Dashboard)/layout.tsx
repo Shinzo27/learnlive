@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar'
+import DashboardLayout from '@/components/Dashboard-layout';
 import React from 'react';
 
 interface Props {
@@ -7,9 +7,10 @@ interface Props {
 
 export default (props: Props) => {
   return (
-    <div className="flex min-h-screen w-full">
-      <Navbar />
-      <div className="wrapper w-full">{props.children}</div>
+    <div className=" min-h-screen w-full">
+      <DashboardLayout>
+        <div className="wrapper w-full">{props.children}</div>
+      </DashboardLayout>
     </div>
   );
 };
