@@ -168,7 +168,7 @@ const page = ({ params }: { params: { course: String }}) => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
           >
             Complete Enrollment
           </Button>

@@ -54,18 +54,6 @@ const page = () => {
                 </CardSpotlight>
             ))
         }
-        {/* <CardSpotlight
-          className="h-96 w-96 border-white border-4 cursor-pointer"
-          onClick={handleRedirect}
-        >
-          <Image
-            className="relative z-50"
-            src={"/images/course-1.webp"}
-            alt="course"
-            width={400}
-            height={400}
-          />
-        </CardSpotlight> */}
       </div>
     </div>
   );
