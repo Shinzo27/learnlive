@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AppBar from "@/components/AppBar";
 import Footer from "@/components/Footer";
+import { Providers } from "@/lib/Providers";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Learn Live",
@@ -19,9 +21,12 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         className={`bg-neutral-950 text-white`}
       >
-        <AppBar/>
-        {children}
-        <Footer/>
+        <Providers>
+          <AppBar/>
+          {children}
+          <Toaster/>
+          <Footer/>
+        </Providers>
       </body>
     </html>
   );

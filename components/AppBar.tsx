@@ -1,10 +1,16 @@
 "use client";
 import { GraduationCap, Menu, X } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
+import { NEXT_AUTH } from "@/lib/auth";
 
 const AppBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   const redirectHandler = () => {
     window.open("https://github.com/Shinzo27/learnlive.git", "_blank");
@@ -13,7 +19,13 @@ const AppBar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const session = true;
+  const { data: session, status } = useSession();
+
+  const logoutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    signOut({ callbackUrl: "/" });
+    toast.success("Logged out successfully");
+  }
 
   return (
     <nav className="bg-neutral-950 text-white font-bold">
@@ -49,7 +61,7 @@ const AppBar = () => {
             <Link href="/home">Home</Link>
             <Link href="/bookmarks">Bookmarks</Link>
             <Link href="/profile">Profile</Link>
-            <Link href="/logout">Logout</Link>
+            <button onClick={logoutHandler}>Logout</button>
           </div>
         )}
       </div>
@@ -70,7 +82,7 @@ const AppBar = () => {
           <Link href="/home">Home</Link>
             <Link href="/bookmarks">Bookmarks</Link>
             <Link href="/profile">Profile</Link>
-            <Link href="/logout">Logout</Link>
+            <button onClick={logoutHandler}>Logout</button>
         </div>
       )
     )}

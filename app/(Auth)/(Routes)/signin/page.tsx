@@ -5,16 +5,26 @@ import { ArrowRight, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: any) => {
     e.preventDefault();
-    // Handle sign-in logic here
-    console.log("Sign in attempted with:", { email, password });
+    const signin = await signIn("credentials", {
+      email,
+      password,
+      redirect: false
+    });
+    if(signin?.ok){
+      router.push('/home')
+    }
   };
+  
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
       <main className="flex-grow flex items-center justify-center px-4">
