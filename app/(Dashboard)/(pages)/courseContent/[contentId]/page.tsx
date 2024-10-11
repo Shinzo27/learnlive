@@ -89,7 +89,7 @@ const page = () => {
                         onChange={(e) => setComment(e.target.value)}
                         className="flex-grow bg-neutral-700 border-neutral-600 text-white"
                       />
-                      <Button type="submit" size="icon" className="bg-blue-600 hover:bg-blue-700">
+                      <Button type="submit" size="icon" className="bg-blue-600 hover:bg-blue-700 text-white">
                         <Send className="h-4 w-4" />
                       </Button>
                     </form>

@@ -1,12 +1,13 @@
 "use client";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight, Github, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
@@ -21,6 +22,16 @@ const page = () => {
       redirect: false
     });
     if(signin?.ok){
+      toast.success("Logged in successfully");
+      router.push('/home')
+    }
+  };
+
+  const githubLoginHandler = async(e: any) => {
+    e.preventDefault();
+    const signin = await signIn("github");
+    if(signin?.ok){
+      toast.success("Logged in successfully");
       router.push('/home')
     }
   };
@@ -65,6 +76,14 @@ const page = () => {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
+          <Button
+              type="submit"
+              className="w-full bg-neutral-700 hover:bg-neutral-500 text-white mt-5"
+              onClick={githubLoginHandler}
+            >
+              Login with Github
+              <Github className="ml-2 h-4 w-4" />
+          </Button>
           <div className="mt-4 text-center">
             <Link
               href="/forgot-password"

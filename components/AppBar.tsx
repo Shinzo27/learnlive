@@ -21,10 +21,11 @@ const AppBar = () => {
   };
   const { data: session, status } = useSession();
 
-  const logoutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const logoutHandler = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    signOut({ callbackUrl: "/" });
     toast.success("Logged out successfully");
+    await signOut({ redirect: false });
+    router.push("/");
   }
 
   return (
