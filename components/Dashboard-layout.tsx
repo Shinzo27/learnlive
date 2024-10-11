@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-neutral-950 p-4">
+      <aside className="w-64 bg-neutral-950 p-4 hidden sm:block">
         <nav className="space-y-2">
           <Link href="/home" passHref>
             <Button
