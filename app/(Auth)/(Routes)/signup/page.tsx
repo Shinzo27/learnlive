@@ -7,33 +7,42 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [ name, setName ] = useState<string>("");
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, name }),
-    });
-    const data = await res.json();
-    if(data.status === 200) {
-      toast.success(data.message);
-      router.push("/signin");
-    } else {
-      toast.error(data.message);
+    setIsLoading(true);
+    try {  
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, name }),
+      });
+      const data = await res.json();
+      if(data.status === 200) {
+        toast.success(data.message);
+        router.push("/signin");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return (
+  return isLoading ? <Loader /> : (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
       <main className="flex-grow flex items-center justify-center px-4">
         <div className="bg-neutral-900 p-8 rounded-lg shadow-lg w-full max-w-md">

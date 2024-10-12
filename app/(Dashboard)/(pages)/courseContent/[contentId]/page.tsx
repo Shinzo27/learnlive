@@ -62,8 +62,8 @@ const page = () => {
                   <HeroVideoDialog
                     className="hidden dark:block"
                     animationStyle="top-in-bottom-out"
-                    videoSrc="/videos/lesson1.MP4"
-                    thumbnailSrc="/images/thumbnail.png"
+                    videoSrc="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    thumbnailSrc="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
                     thumbnailAlt="Hero Video"
                   />
                 </div>
