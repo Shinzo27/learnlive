@@ -24,6 +24,8 @@ const page = () => {
     if(signin?.ok){
       toast.success("Logged in successfully");
       router.push('/home')
+    } else {
+      toast.error("Invalid email or password");
     }
   };
 

@@ -4,7 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GraduationCap, PlayCircle, Settings } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const page = () => {
   const router = useRouter();
@@ -62,6 +64,12 @@ const page = () => {
     router.push(`/courseOverview/${courseId}`);
   } 
 
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    console.log(session?.user);
+  },[]);
+  
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <main className="container mx-auto">

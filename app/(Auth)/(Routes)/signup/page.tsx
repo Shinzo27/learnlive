@@ -5,11 +5,15 @@ import { ArrowRight, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [ name, setName ] = useState<string>("");
+  
+  const router = useRouter();
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +24,13 @@ const page = () => {
       },
       body: JSON.stringify({ email, password, name }),
     });
-    
+    const data = await res.json();
+    if(data.status === 200) {
+      toast.success(data.message);
+      router.push("/signin");
+    } else {
+      toast.error(data.message);
+    }
   };
 
   return (

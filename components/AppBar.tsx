@@ -61,7 +61,7 @@ const AppBar = () => {
           <div className="hidden sm:flex items-center space-x-7 px-4">
             <Link href="/home">Home</Link>
             <Link href="/bookmarks">Bookmarks</Link>
-            <Link href="/profile">Profile</Link>
+            <Link href="/profile">{session?.user?.name}</Link>
             <button onClick={logoutHandler}>Logout</button>
           </div>
         )}

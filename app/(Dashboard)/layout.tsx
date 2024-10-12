@@ -11,6 +11,7 @@ interface Props {
 
 export default async (props: Props) => {
   const session = await getServerSession(NEXT_AUTH);
+
   if(!session?.user) { 
     return redirect('/');
   }

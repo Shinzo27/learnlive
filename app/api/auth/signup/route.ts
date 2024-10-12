@@ -2,20 +2,21 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcryptjs'; 
 import { prisma } from '@/lib/prisma';
 import { userSchema } from '@/lib/types';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface Data {}
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-    if(req.method === 'POST') {
-        res.status(200).json({ message: "Method not allowed!"});
+export async function POST(req: NextRequest) {
+    if(req.method !== 'POST') {
+        return NextResponse.json({ message: "Method not allowed!"});
     }
 
-    const payload = req.body;
+    const body = await req.json();
 
-    const parsedPayload = userSchema.safeParse(payload);
+    const parsedPayload = userSchema.safeParse(body);
 
     if(!parsedPayload.success) {
-        return res.status(400).json({ message: parsedPayload.error.message });
+        return NextResponse.json({ message: parsedPayload.error.message });
     }
     
     const { name, email, password } = parsedPayload.data;
@@ -27,8 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
     if(existingUser) {
-        res.status(400).json({ message: "User already exists!" });
-        return;
+        return NextResponse.json({ message: "User already exist with this email!" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -40,6 +40,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             password: hashedPassword,
         },
     });
-
-    res.status(200).json({ message: "User created successfully!" });
+    
+    if(newUser) {
+        return NextResponse.json({ message: "User created successfully!", status: 200 });
+    } else {
+        return NextResponse.json({ message: "Something went wrong!", status: 500 });
+    }
 }
