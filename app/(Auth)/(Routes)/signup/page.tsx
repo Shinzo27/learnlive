@@ -9,12 +9,20 @@ import { useState } from "react";
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [ name, setName ] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign-in logic here
-    console.log("Sign up attempted with:", { email, password });
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password, name }),
+    });
+    
   };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
       <main className="flex-grow flex items-center justify-center px-4">
@@ -23,6 +31,18 @@ const page = () => {
             Sign Up to LearnLive
           </h1>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Example"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-neutral-800 border-neutral-700 text-white"
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
