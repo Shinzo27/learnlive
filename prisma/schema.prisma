@@ -14,30 +14,36 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  email         String          @unique
+  id            Int          @id @default(autoincrement())
   name          String?
-  token         String?
-  sessions      Session[]
+  email         String          @unique
+  password      String?
+  role          Role
+  profile       Profile?
   purchases     UserPurchases[]
   videoProgress VideoProgress[]
   comments      Comment[]
-  votes         Vote[]
-  bookmarks     Bookmark[]
-  password      String?
-  questions     Question[]
-  answers       Answer[]
   certificate   Certificate[]
-  role          String?
+  bookmarks     Bookmark[]
+}
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 model Course {
   id              Int             @id @default(autoincrement())
   title           String
-  imageUrl        String
   description     String
-  openToEveryone  Boolean         @default(false)
-  slug            String
+  price           Float
+  imageUrl        String
   content         CourseContent[]
   purchasedBy     UserPurchases[]
   certificate     Certificate[]
@@ -45,20 +51,19 @@ model Course {
 }
 
 model UserPurchases {
-  userId     String
+  id         Int      @id @default(autoincrement())
+  userId     Int
   courseId   Int
   course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignedAt DateTime @default(now())
-
-  @@id([userId, courseId])
 }
 
 model Certificate {
   id       String  @id @default(cuid())
   slug     String  @default("certId")
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
+  userId   Int
   Course   Course? @relation(fields: [courseId], references: [id])
   courseId Int?
 }
@@ -67,7 +72,6 @@ model Content {
   id               Int             @id @default(autoincrement())
   type             String          @default("text")
   title            String
-  hidden           Boolean         @default(false)
   description      String?
   thumbnail        String?
   parentId         Int?
@@ -105,32 +109,7 @@ model NotionMetadata {
 model VideoMetadata {
   id                         Int             @id @default(autoincrement())
   contentId                  Int
-  video_1080p_mp4_1          String? // Link to 1080p mp4 quality video variant 1
-  video_1080p_mp4_2          String? // Link to 1080p mp4 quality video variant 2
-  video_1080p_mp4_3          String? // Link to 1080p mp4 quality video variant 3
-  video_1080p_mp4_4          String? // Link to 1080p mp4 quality video variant 4
-  video_1080p_1              String? // Link to 1080p quality video variant 1
-  video_1080p_2              String? // Link to 1080p quality video variant 2
-  video_1080p_3              String? // Link to 1080p quality video variant 3
-  video_1080p_4              String? // Link to 1080p quality video variant 4
-  video_720p_mp4_1           String? // Link to 720p mp4 quality video variant 1
-  video_720p_mp4_2           String? // Link to 720p mp4 quality video variant 2
-  video_720p_mp4_3           String? // Link to 720p mp4 quality video variant 3
-  video_720p_mp4_4           String? // Link to 720p mp4 quality video variant 4
-  video_720p_1               String? // Link to 720p quality video variant 1
-  video_720p_2               String? // Link to 720p quality video variant 2
-  video_720p_3               String? // Link to 720p quality video variant 3
-  video_720p_4               String? // Link to 720p quality video variant 4
-  video_360p_mp4_1           String? // Link to 360p mp4 quality video variant 1
-  video_360p_mp4_2           String? // Link to 360p mp4 quality video variant 2
-  video_360p_mp4_3           String? // Link to 360p mp4 quality video variant 3
-  video_360p_mp4_4           String? // Link to 360p mp4 quality video variant 4
-  video_360p_1               String? // Link to 360p quality video variant 1
-  video_360p_2               String? // Link to 360p quality video variant 2
-  video_360p_3               String? // Link to 360p quality video variant 3
-  video_360p_4               String? // Link to 360p quality video variant 4
-  subtitles                  String? // Link to subtitles file
-  subtitle_tried             Int             @default(0) //Count of subtitle transcoding tries
+  video_Link                 String?
   segments                   Json?
   content                    Content         @relation(fields: [contentId], references: [id])
   slides                     String? // link to slides
@@ -149,7 +128,7 @@ model VideoMetadata {
 
 model VideoProgress {
   id               Int      @id @default(autoincrement())
-  userId           String
+  userId           Int
   contentId        Int
   currentTimestamp Int
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -162,7 +141,7 @@ model VideoProgress {
 
 model Bookmark {
   id        Int      @id @default(autoincrement())
-  userId    String
+  userId    Int
   contentId Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   content   Content  @relation(fields: [contentId], references: [id])
@@ -179,33 +158,14 @@ model Comment {
   parentId     Int?
   parent       Comment?    @relation("ParentComment", fields: [parentId], references: [id])
   children     Comment[]   @relation("ParentComment")
-  userId       String
+  userId       Int
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   upvotes      Int         @default(0)
   downvotes    Int         @default(0)
   repliesCount Int         @default(0)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-  votes        Vote[]
   isPinned     Boolean     @default(false)
-}
-
-model Vote {
-  id         Int       @id @default(autoincrement())
-  questionId Int?
-  question   Question? @relation(fields: [questionId], references: [id])
-  answerId   Int?
-  answer     Answer?   @relation(fields: [answerId], references: [id])
-  commentId  Int?
-  comment    Comment?  @relation(fields: [commentId], references: [id])
-  userId     String
-  user       User      @relation(fields: [userId], references: [id])
-  voteType   VoteType
-  createdAt  DateTime  @default(now())
-
-  @@unique([questionId, userId])
-  @@unique([answerId, userId])
-  @@unique([commentId, userId])
 }
 
 enum VoteType {
@@ -223,53 +183,4 @@ enum MigrationStatus {
   IN_PROGRESS
   MIGRATED
   MIGRATION_ERROR
-}
-
-model Question {
-  id           Int      @id @default(autoincrement())
-  title        String
-  content      String
-  slug         String   @unique
-  createdAt    DateTime @default(now())
-  author       User     @relation(fields: [authorId], references: [id])
-  authorId     String
-  upvotes      Int      @default(0)
-  downvotes    Int      @default(0)
-  totalanswers Int      @default(0)
-  answers      Answer[]
-  votes        Vote[]
-  tags         String[]
-  updatedAt    DateTime @updatedAt
-
-  @@index([authorId])
-}
-
-model Answer {
-  id           Int      @id @default(autoincrement())
-  content      String
-  createdAt    DateTime @default(now())
-  question     Question @relation(fields: [questionId], references: [id])
-  questionId   Int
-  author       User     @relation(fields: [authorId], references: [id])
-  authorId     String
-  votes        Vote[]
-  upvotes      Int      @default(0)
-  downvotes    Int      @default(0)
-  totalanswers Int      @default(0)
-  parentId     Int?
-  responses    Answer[] @relation("AnswerToAnswer")
-  parent       Answer?  @relation("AnswerToAnswer", fields: [parentId], references: [id])
-  updatedAt    DateTime @updatedAt
-
-  @@index([questionId])
-  @@index([authorId])
-  @@index([parentId])
-}
-
-model Session {
-  id        Int      @id @default(autoincrement())
-  sesionId  String   @unique
-  userId    String
-  expires   DateTime
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
