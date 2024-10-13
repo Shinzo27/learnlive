@@ -5,3 +5,10 @@ export const userSchema = z.object({
     email: z.string().email(),
     password: z.string(),
 })
+
+export const courseSchema = z.object({
+    title: z.string(),
+    description: z.string(),
+    price: z.number(),
+    imageUrl: z.string(),
+})
