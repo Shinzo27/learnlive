@@ -1,6 +1,7 @@
 import { courseSchema } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -9,7 +10,15 @@ export const POST = async (req: NextRequest) => {
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
         const price = parseFloat(formData.get('price') as string);
-        const imageFile = formData.get('imageUrl') as File | null;
+        const imageFile = formData.get('imageUrl') as File;
+
+        const fileBuffer = await imageFile.arrayBuffer();
+
+        const mimeType = imageFile.type;
+        const encoding = "base64";
+        const imageBase64 = Buffer.from(fileBuffer).toString("base64");
+
+        const fileUri = "data:" + mimeType + ";" + encoding + "," + imageBase64;
 
         const payload = {
             title,
@@ -24,44 +33,43 @@ export const POST = async (req: NextRequest) => {
             return NextResponse.json({ body: "Invalid payload", status: 400 });
         }
         
-        let imageUrl = '';
+        let imageUrl: string = '';
 
         if(parsedPayload.data.imageUrl) {
-            // const result = await cloudinary.uploader.upload(parsedPayload.data.imageUrl,{
-            //     folder: 'uploads'
-            // });
+            const res = await uploadToCloudinary(fileUri, parsedPayload.data.imageUrl);
 
-            // if(!result.secure_url){
-            //     console.log(result);
-            //     return NextResponse.json({ body: "Invalid image", status: 400 });
-            // }
+            if(res.success) {
+               imageUrl = res?.result?.secure_url || '';
+            } else {
+                return NextResponse.json({ body: "Something went wrong", status: 500 });
+            }
         }
 
 
-        // const ifExists = await prisma.course.findFirst({
-        //     where: {
-        //         title: parsedPayload.data.title,
-        //     },
-        // });
+        const ifExists = await prisma.course.findFirst({
+            where: {
+                title: parsedPayload.data.title,
+            },
+        });
         
-        // if (ifExists) {
-        //     return NextResponse.json({ body: "Course already exists", status: 400 });
-        // }
+        if (ifExists) {
+            return NextResponse.json({ body: "Course already exists", status: 400 });
+        }
         
-        // const newCourse = await prisma.course.create({
-        //     data: {
-        //         title: parsedPayload.data.title,
-        //         description: parsedPayload.data.description,
-        //         price: parsedPayload.data.price,
-        //         imageUrl: parsedPayload.data.imageUrl,
-        //     }
-        // });
+        const newCourse = await prisma.course.create({
+            data: {
+                title: parsedPayload.data.title,
+                description: parsedPayload.data.description,
+                price: parsedPayload.data.price,
+                imageUrl: imageUrl,
+            }
+        });
         
-        // if(newCourse) {
-        //     return NextResponse.json({ message: "Course added successfully", status: 200 });
-        // } else {
-        //     return NextResponse.json({ body: "Something went wrong", status: 500 });
-        // }
+        if(newCourse) {
+            return NextResponse.json({ message: "Course added successfully", status: 200 });
+        } else {
+            return NextResponse.json({ body: "Something went wrong", status: 500 });
+        }
     } catch (error) {
         return NextResponse.json({ body: error, status: 500 });
     }
