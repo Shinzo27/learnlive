@@ -8,13 +8,15 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
+import { useSession } from "next-auth/react";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [ name, setName ] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-
+  
+  const session = useSession()
   const router = useRouter();
 
   const handleSubmit = async(e: React.FormEvent) => {
@@ -41,6 +43,10 @@ const page = () => {
       setIsLoading(false);
     }
   };
+
+  if(session?.data?.user) {
+    return router.push('/home')
+  }
 
   return isLoading ? <Loader /> : (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">

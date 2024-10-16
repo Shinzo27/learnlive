@@ -5,7 +5,7 @@ import { ArrowRight, Github, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Loader from "@/components/Loader";
@@ -15,6 +15,7 @@ const page = () => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false);
+  const session = useSession();
 
   const handleSubmit = async(e: any) => {
     e.preventDefault();
@@ -46,6 +47,10 @@ const page = () => {
       router.push('/home')
     }
   };
+
+  if(session?.data?.user) {
+    return router.push('/home')
+  }
   
   return isLoading ? <Loader /> : (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">

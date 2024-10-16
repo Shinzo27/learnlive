@@ -1,10 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { TabsList } from "@radix-ui/react-tabs";
+
 import {
   BarChart,
   BookOpen,
@@ -16,7 +12,8 @@ import {
   Settings,
   Users,
 } from "lucide-react";
-import { useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 const page = () => {
     const currentTime = new Date()
@@ -29,14 +26,16 @@ const page = () => {
     }
 
   const adminFunctions = [
-    { title: "Add Course", icon: <Package className="h-6 w-6" />, description: "Add new courses to the platform" },
-    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content" },
-    { title: "Manage Users", icon: <Users className="h-6 w-6" />, description: "Invite, remove, and manage users" },
-    { title: "Manage Courses", icon: <BookOpen className="h-6 w-6" />, description: "Add, remove, and manage courses" },
-    { title: "Manage Settings", icon: <Settings className="h-6 w-6" />, description: "Configure platform settings" },
-    { title: "Certificate Management", icon: <GraduationCap className="h-6 w-6" />, description: "" },
-    { title: "Messages", icon: <MessageSquare className="h-6 w-6" />, description: "Send and receive messages"},
-  ]
+    { title: "Add Course", icon: <Package className="h-6 w-6" />, description: "Add new courses to the platform", route: "/addCourse" },
+    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content", route: "/addCourse" },
+    { title: "Manage Users", icon: <Users className="h-6 w-6" />, description: "Invite, remove, and manage users", route: "/addCourse" },
+    { title: "Manage Courses", icon: <BookOpen className="h-6 w-6" />, description: "Add, remove, and manage courses", route: "/addCourse" },
+    { title: "Manage Settings", icon: <Settings className="h-6 w-6" />, description: "Configure platform settings", route: "/addCourse" },
+    { title: "Certificate Management", icon: <GraduationCap className="h-6 w-6" />, description: "", route: "/addCourse" },
+    { title: "Messages", icon: <MessageSquare className="h-6 w-6" />, description: "Send and receive messages", route: "/addCourse"},
+  ] 
+
+  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white p-8">
@@ -46,7 +45,7 @@ const page = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {adminFunctions.map((func, index) => (
-            <Card key={index} className={`bg-neutral-950 border-neutral-800 cursor-pointer`} onClick={() => alert(`${func.title} Coming soon!`)}>
+            <Card key={index} className={`bg-neutral-950 border-neutral-800 cursor-pointer`} onClick={() => router.push(func.route)}>
               <CardContent className="p-6 flex flex-col items-center text-center">
                 <div className={`p-3 rounded-lg mb-4`}>
                   {func.icon}

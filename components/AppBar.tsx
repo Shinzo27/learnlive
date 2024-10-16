@@ -28,6 +28,10 @@ const AppBar = () => {
     router.push("/");
   }
 
+  useEffect(()=> {
+    console.log(session?.user);
+  }, [])
+
   return (
     <nav className="bg-neutral-950 text-white font-bold">
       <div className="flex items-center justify-between h-16 px-4 sm:px-8">
@@ -61,7 +65,7 @@ const AppBar = () => {
           <div className="hidden sm:flex items-center space-x-7 px-4">
             <Link href="/home">Home</Link>
             <Link href="/bookmarks">Bookmarks</Link>
-            <Link href="/profile">{session?.user?.name}</Link>
+            <Link href="/profile">{session?.user?.name}</Link>  
             <button onClick={logoutHandler}>Logout</button>
           </div>
         )}

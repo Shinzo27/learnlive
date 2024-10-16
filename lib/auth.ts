@@ -6,12 +6,18 @@ import { Session } from "next-auth";
 
 export interface session extends Session {
   user: {
-    id: string;
+    id: number;
     jwtToken: string;
     role: string;
     email: string;
     name: string;
   };
+}
+
+declare module 'next-auth' {
+  interface User {
+    id: number; // <- here it is
+  }
 }
 
 export const NEXT_AUTH = {
@@ -22,7 +28,7 @@ export const NEXT_AUTH = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials:any) {
         if (!credentials?.email || !credentials?.password) {
             return null;
         }
@@ -30,6 +36,7 @@ export const NEXT_AUTH = {
         const user = await prisma.user.findFirst({
           where: {
             email: credentials.email,
+            role: 'USER'
           },
         });
         if (!user) {
@@ -43,7 +50,7 @@ export const NEXT_AUTH = {
         if (!isValid) {
           return null;
         }
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email, role: user.role };
       },
     }),
     GithubProvider({
@@ -53,11 +60,22 @@ export const NEXT_AUTH = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    session: ({ session, token, user} : any) => {
-      if( session && session.user ) {
-          session.user.id = token.userId
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.role = user.role;
       }
-      return session
+      return token;
+    },
+    async session({ session, token }: any) {
+      // Attach the token info to the session object.
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.role = token.role;
+      }
+      return session;
     }
   },
   pages: {
