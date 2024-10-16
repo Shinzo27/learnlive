@@ -1,7 +1,7 @@
 import { courseSchema } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { cloudinary, uploadToCloudinary } from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -26,6 +26,8 @@ export const POST = async (req: NextRequest) => {
             price,
             imageUrl: imageFile ? imageFile.name : null,
         }
+
+        console.log(payload);
 
         const parsedPayload = courseSchema.safeParse(payload);
 
@@ -66,9 +68,9 @@ export const POST = async (req: NextRequest) => {
         });
         
         if(newCourse) {
-            return NextResponse.json({ message: "Course added successfully", status: 200 });
+            return NextResponse.json({ success: true, message: "Course added successfully", status: 200 });
         } else {
-            return NextResponse.json({ body: "Something went wrong", status: 500 });
+            return NextResponse.json({ success: false, body: "Something went wrong", status: 500 });
         }
     } catch (error) {
         return NextResponse.json({ body: error, status: 500 });

@@ -16,7 +16,7 @@ export interface session extends Session {
 
 declare module 'next-auth' {
   interface User {
-    id: number; // <- here it is
+    id: number;
   }
 }
 
@@ -58,6 +58,9 @@ export const NEXT_AUTH = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
     }),
   ],
+  session: {
+    strategy: 'jwt' as const
+  },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }: any) {

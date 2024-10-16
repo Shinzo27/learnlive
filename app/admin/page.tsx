@@ -1,6 +1,5 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import {
   BarChart,
   BookOpen,
@@ -12,7 +11,6 @@ import {
   Settings,
   Users,
 } from "lucide-react";
-
 import { useRouter } from "next/navigation";
 
 const page = () => {
@@ -27,12 +25,12 @@ const page = () => {
 
   const adminFunctions = [
     { title: "Add Course", icon: <Package className="h-6 w-6" />, description: "Add new courses to the platform", route: "/addCourse" },
-    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content", route: "/addCourse" },
-    { title: "Manage Users", icon: <Users className="h-6 w-6" />, description: "Invite, remove, and manage users", route: "/addCourse" },
-    { title: "Manage Courses", icon: <BookOpen className="h-6 w-6" />, description: "Add, remove, and manage courses", route: "/addCourse" },
-    { title: "Manage Settings", icon: <Settings className="h-6 w-6" />, description: "Configure platform settings", route: "/addCourse" },
-    { title: "Certificate Management", icon: <GraduationCap className="h-6 w-6" />, description: "", route: "/addCourse" },
-    { title: "Messages", icon: <MessageSquare className="h-6 w-6" />, description: "Send and receive messages", route: "/addCourse"},
+    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content", route: "/viewContent" },
+    { title: "Manage Users", icon: <Users className="h-6 w-6" />, description: "Invite, remove, and manage users", route: "/manageUser" },
+    { title: "Manage Courses", icon: <BookOpen className="h-6 w-6" />, description: "Add, remove, and manage courses", route: "/manageCourses" },
+    { title: "Manage Settings", icon: <Settings className="h-6 w-6" />, description: "Configure platform settings", route: "/manageSetting" },
+    { title: "Certificate Management", icon: <GraduationCap className="h-6 w-6" />, description: "", route: "/manageCertificate" },
+    { title: "Messages", icon: <MessageSquare className="h-6 w-6" />, description: "Send and receive messages", route: "/manageMessage"},
   ] 
 
   const router = useRouter();

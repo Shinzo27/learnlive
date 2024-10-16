@@ -1,52 +1,72 @@
 "use client"
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { SelectValue } from "@radix-ui/react-select";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 const page = () => {
-  const [courseData, setCourseData] = useState({
-    title: "",
-    description: "",
-    instructor: "",
-    category: "",
-    duration: "",
-    price: "",
-    isPublished: false,
-  });
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [imageUrl, setImageUrl] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setCourseData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageUrl(file);
+    } else {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      toast.error("Please upload a valid image file (jpg, png, jpeg).");
+    }
+  }
+  
 
-  const handleSelectChange = (name: string, value: string) => {
-    setCourseData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSwitchChange = (checked: boolean) => {
-    setCourseData((prev) => ({ ...prev, isPublished: checked }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Course data submitted:", courseData);
-    // Here you would typically send the data to your backend
+    setLoading(true)
+    
+    if (!imageUrl) {
+      setLoading(false)
+      return toast.error("Upload image properly!");
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("imageUrl", imageUrl);
+  
+      const res = await fetch('/api/admin/addCourse', {
+        method: 'POST',
+        body: formData
+      })
+  
+      const data = await res.json();
+      if(data.success) {
+        toast.success("Course added successfully");
+        router.push('/admin')
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!")
+    } finally {
+      setLoading(false)
+    }
   };
 
-  return (
+  return loading ? <Loader/> : (
     <div className="min-h-screen bg-neutral-950 text-white">
       <main className="container mx-auto px-4 py-8">
         <Card className="bg-neutral-900 border-neutral-800">
@@ -60,8 +80,8 @@ const page = () => {
                 <Input
                   id="title"
                   name="title"
-                  value={courseData.title}
-                  onChange={handleInputChange}
+                  value={title}
+                  onChange={e=>setTitle(e.target.value)}
                   required
                   className="bg-neutral-800 border-neutral-700 text-white"
                 />
@@ -72,65 +92,12 @@ const page = () => {
                 <Textarea
                   id="description"
                   name="description"
-                  value={courseData.description}
-                  onChange={handleInputChange}
+                  value={description}
+                  onChange={e=>setDescription(e.target.value)}
                   required
                   className="bg-neutral-800 border-neutral-700 text-white"
                 />
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="instructor">Instructor</Label>
-                <Input
-                  id="instructor"
-                  name="instructor"
-                  value={courseData.instructor}
-                  onChange={handleInputChange}
-                  required
-                  className="bg-neutral-800 border-neutral-700 text-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <Select
-                  name="category"
-                  onValueChange={(value) =>
-                    handleSelectChange("category", value)
-                  }
-                >
-                  <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="web-development">
-                      Web Development
-                    </SelectItem>
-                    <SelectItem value="data-science">Data Science</SelectItem>
-                    <SelectItem value="mobile-development">
-                      Mobile Development
-                    </SelectItem>
-                    <SelectItem value="machine-learning">
-                      Machine Learning
-                    </SelectItem>
-                    <SelectItem value="design">Design</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="duration">Course Duration (in weeks)</Label>
-                <Input
-                  id="duration"
-                  name="duration"
-                  type="number"
-                  value={courseData.duration}
-                  onChange={handleInputChange}
-                  required
-                  className="bg-neutral-800 border-neutral-700 text-white"
-                />
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="price">Course Price ($)</Label>
                 <Input
@@ -138,25 +105,26 @@ const page = () => {
                   name="price"
                   type="number"
                   step="0.01"
-                  value={courseData.price}
-                  onChange={handleInputChange}
+                  value={price}
+                  onChange={e=>setPrice(e.target.value)}
                   required
                   className="bg-neutral-800 border-neutral-700 text-white"
                 />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="isPublished"
-                  checked={courseData.isPublished}
-                  onCheckedChange={handleSwitchChange}
+              </div>  
+              <div className="space-y-2">
+                <Label htmlFor="price">Course Price ($)</Label>
+                <Input
+                  id="imageUrl"
+                  name="imageUrl"
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  className="bg-neutral-800 border-neutral-700 text-white"
                 />
-                <Label htmlFor="isPublished">Publish course immediately</Label>
-              </div>
-
+              </div>  
               <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Add Course
               </Button>
