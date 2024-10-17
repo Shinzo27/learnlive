@@ -14,7 +14,7 @@ const page = () => {
     const [contentData, setContentData] = useState({
         title: '',
         description: '',
-        moduleId: '',
+        FolderId: '',
         videoUrl: '',
         documentUrl: '',
     })
@@ -47,15 +47,15 @@ const page = () => {
               <div className="space-y-2">
                 <Label>Content Type</Label>
                 <RadioGroup
-                  defaultValue="module" 
+                  defaultValue="folder" 
                   onValueChange={(value) => setContentType(value as 'folder' | 'video' | 'document')}
                   className="flex space-x-4"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="module" id="module" />
-                    <Label htmlFor="module" className="flex items-center">
+                    <RadioGroupItem value="folder" id="folder" />
+                    <Label htmlFor="folder" className="flex items-center">
                       <Folder className="mr-2 h-4 w-4" />
-                      New Module
+                      New Folder
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -100,15 +100,15 @@ const page = () => {
 
               {contentType !== 'folder' && (
                 <div className="space-y-2">
-                  <Label htmlFor="moduleId">Select Module</Label>
-                  <Select name="moduleId" onValueChange={(value) => handleSelectChange('moduleId', value)}>
+                  <Label htmlFor="FolderId">Select Folder</Label>
+                  <Select name="FolderId" onValueChange={(value) => handleSelectChange('FolderId', value)}>
                     <SelectTrigger className="bg-neutral-800 border-neutral-700 text-white">
-                      <SelectValue placeholder="Select a module" />
+                      <SelectValue placeholder="Select a Folder" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="module1">Module 1: Introduction</SelectItem>
-                      <SelectItem value="module2">Module 2: Advanced Concepts</SelectItem>
-                      <SelectItem value="module3">Module 3: Practical Applications</SelectItem>
+                      <SelectItem value="Folder1">Folder 1: Introduction</SelectItem>
+                      <SelectItem value="Folder2">Folder 2: Advanced Concepts</SelectItem>
+                      <SelectItem value="Folder3">Folder 3: Practical Applications</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
