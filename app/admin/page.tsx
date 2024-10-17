@@ -25,7 +25,7 @@ const page = () => {
 
   const adminFunctions = [
     { title: "Add Course", icon: <Package className="h-6 w-6" />, description: "Add new courses to the platform", route: "/addCourse" },
-    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content", route: "/viewContent" },
+    { title: "View Content", icon: <FileText className="h-6 w-6" />, description: "Browse and manage existing content", route: "/content" },
     { title: "Manage Users", icon: <Users className="h-6 w-6" />, description: "Invite, remove, and manage users", route: "/manageUser" },
     { title: "Manage Courses", icon: <BookOpen className="h-6 w-6" />, description: "Add, remove, and manage courses", route: "/manageCourses" },
     { title: "Manage Settings", icon: <Settings className="h-6 w-6" />, description: "Configure platform settings", route: "/manageSetting" },
