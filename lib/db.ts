@@ -26,3 +26,12 @@ export const getContentOfCourse = async (id: number) => {
     })
     return content
 }
+
+export const getPurchases = async () => {
+    const purchases = await prisma.userPurchases.findMany({
+        include: {
+            user: true
+        }
+    })
+    return purchases
+}
