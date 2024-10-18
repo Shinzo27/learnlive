@@ -1,13 +1,15 @@
-"use client";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { getAllCourses } from "@/lib/db";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
-const page = () => {
-  const router = useRouter();
-  const handleRedirect = (id: number) => {
-    router.push(`/courseDetail/${id}`);
-  };
+const page = async() => {
+  // const router = useRouter();
+  // const handleRedirect = (id: number) => {
+  //   router.push(`/courses/${id}`);
+  // };
+
+  const allCourses = await getAllCourses()
 
   const courses = [
     {
@@ -30,6 +32,10 @@ const page = () => {
     }
   ]
 
+  // useEffect(()=> {
+  //   console.log(allCourses);
+  // }, [])
+
   return (
     <div className="flex  items-center min-h-screen flex-col pt-20">
         <div>
@@ -41,7 +47,7 @@ const page = () => {
                 <CardSpotlight
                     key={course.id}
                     className="h-96 w-96 border-white border-4 cursor-pointer"
-                    onClick={()=>handleRedirect(course.id)}
+                    // onClick={()=>handleRedirect(course.id)}
                 >
                     <Image
                         className="relative z-50"

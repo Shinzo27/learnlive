@@ -1,0 +1,28 @@
+import { prisma } from '@/lib/prisma'
+
+export const getAllCourses = async () => {
+    const courses = await prisma.course.findMany()
+    return courses
+}
+
+export const getCourseById = async (id: number) => {
+    const course = await prisma.course.findUnique({
+        where: {
+            id: id
+        }
+    })
+    return course
+}
+
+export const getContentOfCourse = async (id: number) => {
+    const content = await prisma.content.findMany({
+        where: {
+            courses: {
+                some: {
+                    courseId: id
+                }
+            }
+        }
+    })
+    return content
+}

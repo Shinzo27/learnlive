@@ -28,10 +28,6 @@ const AppBar = () => {
     router.push("/");
   }
 
-  useEffect(()=> {
-    console.log(session?.user);
-  }, [])
-
   return (
     <nav className="bg-neutral-950 text-white font-bold">
       <div className="flex items-center justify-between h-16 px-4 sm:px-8">

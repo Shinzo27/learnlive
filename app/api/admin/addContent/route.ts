@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export default async function handler(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
   if (req.method !== "POST") {
-    throw new Error("Post request needed!");
+    return NextResponse.json({ message: "Method not allowed", status: 405 });
   }
 
   const body = await req.json();
-
   const {
     type,
     thumbnail,
@@ -37,6 +36,7 @@ export default async function handler(req: NextRequest) {
       type,
       title,
       parentId: parentContentId,
+      description,
       thumbnail,
     },
   });
