@@ -1,3 +1,4 @@
+import { checkIfUserExists } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 
@@ -7,7 +8,14 @@ const razorpay = new Razorpay({
 })
 
 export async function POST(req: NextRequest) {
-    const { amount, currency } = (await req.json()) as { amount: string, currency: string }
+    if (req.method !== "POST") return NextResponse.json({ error: "Method not allowed" }, { status: 405 })
+    const { amount, email } = await req.json()
+
+    if (!amount || !email) return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+
+    const checkUser = await checkIfUserExists(email)
+    if (!checkUser) return NextResponse.json({ error: "User not found! Please Signup first!", status: 404 })
+
     var options = {
         amount: Number(amount)*100,
         currency: "INR",
@@ -17,5 +25,5 @@ export async function POST(req: NextRequest) {
 
     if(!order) return NextResponse.json({ error: "Failed to create order" }, { status: 500 })
 
-    return NextResponse.json({ orderId: order.id }, { status: 200 })
+    return NextResponse.json({ order: order, status: 200 })
 }

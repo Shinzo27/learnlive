@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 const page = ({ params }: { params: { course: String }}) => {
   const [formData, setFormData] = useState({
@@ -25,6 +27,9 @@ const page = ({ params }: { params: { course: String }}) => {
     experience: "",
     agreeTerms: false,
   });
+  const amount = 5000;
+  const [loading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handleInputChange = (e: ChangeEvent) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -39,10 +44,62 @@ const page = ({ params }: { params: { course: String }}) => {
     setFormData((prev) => ({ ...prev, agreeTerms: checked }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to your backend
+    setIsLoading(true)
+    try {
+      const orderResponse = await fetch('/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({amount: amount, email: formData.email}),
+      });
+
+      const orderData = await orderResponse.json();
+      if (orderData.status !== 200) {
+        toast.error(orderData.error)
+        setIsLoading(false)
+        router.push('/signin')
+        return
+      }
+      const { order } = orderData
+
+      const option = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public Razorpay key
+        amount: order.amount,
+        currency: order.currency,
+        name: "Course Name",
+        description: "Purchase course access",
+        order_id: order.id,
+        handler: async (response: any) => {
+          // Handle success response
+          // await fetch('/api/payment', {
+          //   razorpay_order_id: response.razorpay_order_id,
+          //   razorpay_payment_id: response.razorpay_payment_id,
+          //   razorpay_signature: response.razorpay_signature,
+          // });
+          // Handle successful payment UI/flow
+          console.log("Successful payment");
+        },
+        prefill: {
+          name: formData.firstName,
+          email: formData.email,
+        },
+        theme: {
+          color: "#0a0a0a",
+        },
+      };
+
+      // const paymentObject = new (window as any).Razorpay(option);
+      const paymentObject = new (window as any).Razorpay(option);
+      paymentObject.open();
+    } catch (error) {
+      toast.error("Something went wrong! Please try again later.")
+      console.log(error); // Handle error
+      setIsLoading(false)
+      return
+    }
   };
   const courseId = params.course
   return (

@@ -5,6 +5,15 @@ export const getAllCourses = async () => {
     return courses
 }
 
+export const checkIfUserExists = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+    return user
+}
+
 export const getCourseById = async (id: number) => {
     const course = await prisma.course.findUnique({
         where: {

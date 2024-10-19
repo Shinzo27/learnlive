@@ -17,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning={true} lang="en" className="dark">
+      <head >
+        <script src="https://checkout.razorpay.com/v1/checkout.js" id="razorpay-checkout-js"></script>
+      </head>
       <body
         suppressHydrationWarning={true}
         className={`bg-neutral-950 text-white`}
