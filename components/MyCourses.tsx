@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlayCircle } from "lucide-react";
 import Image from "next/image";
@@ -21,7 +21,7 @@ const MyCourses = () => {
           lastAccessed: "2 days ago",
           totalLessons: 24,
           completedLessons: 16,
-          thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
+          imageUrl: "/images/course-1.webp"
         },
         {
           id: "2",
@@ -30,7 +30,7 @@ const MyCourses = () => {
           lastAccessed: "1 week ago",
           totalLessons: 32,
           completedLessons: 10,
-          thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
         },
         {
           id: "3",
@@ -39,7 +39,7 @@ const MyCourses = () => {
           lastAccessed: "1 day ago",
           totalLessons: 18,
           completedLessons: 16,
-          thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
         },
         {
           id: "4",
@@ -48,7 +48,7 @@ const MyCourses = () => {
           lastAccessed: "3 days ago",
           totalLessons: 28,
           completedLessons: 13,
-          thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
         },
         {
           id: "5",
@@ -57,7 +57,7 @@ const MyCourses = () => {
           lastAccessed: "4 days ago",
           totalLessons: 40,
           completedLessons: 28,
-          thumbnail: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
+          imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png"
         },
       ];
 
@@ -67,22 +67,27 @@ const MyCourses = () => {
         <ScrollArea className="h-[calc(100vh-200px)] pr-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
-              <Card key={course.id} className="bg-neutral-900 cursor-pointer">
-                <CardHeader>
-                <div className="flex justify-center items-center text-sm mb-4">
-                    <Image src={course.thumbnail} alt="Course Thumbnail" width={300} height={100} className="rounded-lg" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">
-                    {course.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={()=>handleRedirect(course.id)}>
-                    <PlayCircle className="mr-2 h-4 w-4" />
-                    Continue Learning
-                  </Button>
-                </CardContent>
-              </Card>
+              <Card className="overflow-hidden bg-neutral-900 rounded-lg">
+              <CardContent className="p-0">
+                <div className="relative  rounded-lg">
+                  <img
+                    alt={`${course.title} thumbnail`}
+                    className=" rounded-lg"
+                    src={course.imageUrl}
+                    style={{
+                      aspectRatio: "16/9",
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col items-start gap-4 p-6">
+                <h3 className="text-xl font-semibold">{course.title}</h3>
+                <Button className="bg-neutral-700 hover:bg-neutral-800 text-white">
+                  <span className="flex items-center"><PlayCircle className="mr-2 h-4 w-4" />Continue Learning</span>
+                </Button>
+              </CardFooter>
+            </Card>
             ))}
           </div>
         </ScrollArea>

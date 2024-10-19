@@ -35,3 +35,4 @@ export const getPurchases = async () => {
     })
     return purchases
 }
+
