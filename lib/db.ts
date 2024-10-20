@@ -45,3 +45,26 @@ export const getPurchases = async () => {
     return purchases
 }
 
+export const checkIfCoursePurchased = async (courseId: number, userId: number) => {
+    const purchase = await prisma.userPurchases.findFirst({
+        where: {
+            courseId: courseId,
+            userId: userId
+        }
+    })
+    return purchase
+}
+
+export const checkIfNumberExists = async (number: string, courseId: number) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            number: parseInt(number),
+            purchases: {
+                some: {
+                    courseId: courseId
+                }
+            }
+        }
+    })
+    return user
+}

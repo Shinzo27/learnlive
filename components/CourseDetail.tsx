@@ -1,5 +1,4 @@
 "use client"
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,10 +34,6 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
         "Deployment and DevOps"
       ]
     }
-
-    useEffect(() => {
-        console.log(courseDetails)
-    }, [])
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

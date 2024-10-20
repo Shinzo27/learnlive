@@ -18,6 +18,7 @@ model User {
   name          String?
   email         String          @unique
   password      String?
+  number        BigInt?
   role          Role
   profile       Profile?
   purchases     UserPurchases[]
