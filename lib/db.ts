@@ -68,3 +68,22 @@ export const checkIfNumberExists = async (number: string, courseId: number) => {
     })
     return user
 }
+
+export const getUserDetails = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+    return user
+}
+
+export const createPurchase = async (courseId: number, userId: number) => {
+    const purchase = await prisma.userPurchases.create({
+        data: {
+            courseId: courseId,
+            userId: userId
+        }
+    })
+    return purchase
+}

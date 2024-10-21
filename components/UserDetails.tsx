@@ -67,18 +67,11 @@ const UserDetails = ({course}: any) => {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public Razorpay key
             amount: order.amount,
             currency: order.currency,
-            name: "Course Name",
+            name: course.title,
             description: "Purchase course access",
             order_id: order.id,
             handler: async (response: any) => {
-              // Handle success response
-              // await fetch('/api/payment', {
-              //   razorpay_order_id: response.razorpay_order_id,
-              //   razorpay_payment_id: response.razorpay_payment_id,
-              //   razorpay_signature: response.razorpay_signature,
-              // });
-              // Handle successful payment UI/flow
-              console.log("Successful payment");
+              await verifyPayment(response, order.id);
             },
             prefill: {
               name: formData.email,
@@ -97,8 +90,42 @@ const UserDetails = ({course}: any) => {
           console.log(error); // Handle error
           setIsLoading(false)
           return
+        } finally {
+          setIsLoading(false);
         }
       };
+
+      const verifyPayment = async (response: any, orderId : any) => {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ razorpay_order_id: orderId, razorpay_payment_id: response.razorpay_payment_id, razorpay_signature: response.razorpay_signature })
+        })
+        const data = await res.json();
+        if (data.status !== 200) {
+          toast.error(data.error)
+          setIsLoading(false)
+          return
+        } else if (data.status === 200) {
+          const res = await fetch('/api/confirm', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: formData.email, courseId: courseId })
+          })
+          const data = await res.json();
+          if(data.status === 200) {
+            toast.success("Successfully verified payment!")
+            router.push('/signin')
+          } else {
+            toast.error(data.error)
+            setIsLoading(false)
+          }
+        }
+      }
       
       return loading ? <Loader /> : (
         <main className="flex-grow container mx-auto px-4 py-8 min-h-screen">
