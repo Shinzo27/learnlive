@@ -36,10 +36,13 @@ export const getContentOfCourse = async (id: number) => {
     return content
 }
 
-export const getPurchases = async () => {
+export const getPurchases = async (userId: number) => {
     const purchases = await prisma.userPurchases.findMany({
-        include: {
-            user: true
+        where: {
+            userId: userId
+        },
+        select: {
+            course: true
         }
     })
     return purchases
