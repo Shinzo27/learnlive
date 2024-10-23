@@ -1,10 +1,11 @@
 "use client";
-import Link from "next/link";
 import { Spotlight } from "./ui/Spotlight";
 import { Button } from "./ui/moving-border";
 import { WobbleCard } from "./ui/wobble-card";
-import Image from "next/image";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Loader from '@/components/Loader'
 
 const testimonials = [
   {
@@ -39,7 +40,14 @@ const testimonials = [
 ];
 
 const LandingPage = () => {
-  return (
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const handleRedirect = () => {
+    setLoading(true)
+    router.push('/courses')
+    setLoading(false)
+  }
+  return loading ? <Loader/> :  (
     <div className="flex justify-center items-center flex-col sm:pt-64 pt-52">
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
@@ -54,8 +62,8 @@ const LandingPage = () => {
           learning journey today!
         </div>
         <div className="flex items-center justify-center pt-8 sm:pt-10 space-x-5">
-          <Button className="hover:bg-slate-800 font-semibold py-5 sm:text-lg">
-            <Link href="/courses">Explore Courses</Link>
+          <Button className="hover:bg-slate-800 font-semibold py-5 sm:text-lg" onClick={handleRedirect}>
+            Explore Courses
           </Button>
         </div>
       </div>
