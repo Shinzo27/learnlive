@@ -48,7 +48,7 @@ const page = ({ folders, courseId }: any) => {
     title: contentData.title,
     description: contentData.description,
     courseId: courseId,
-    parentId: selectedFolder,
+    parentContentId: parseInt(selectedFolder),
     metadata: {
       videoLink: videoUrl,
       duration: duration,

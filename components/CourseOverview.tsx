@@ -162,21 +162,21 @@ import {
             </Card>
             <ScrollArea className="h-[600px] w-full pr-4">
               <Accordion type="single" collapsible className="w-full">
-                {course.modules.map((module, moduleIndex) => (
+                {content.map((module: any, moduleIndex: any) => (
                   <AccordionItem
                     value={`module-${moduleIndex}`}
                     key={moduleIndex}
                   >
                     <AccordionTrigger className="text-lg font-semibold text-white text-left">
-                      {module.title}
+                      {module.content.title}
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-2">
-                        {module.lessons.map((lesson, lessonIndex) => (
+                        {module.content.children.map((lesson: any, lessonIndex: any) => (
                           <Link
                             href={`/courseContent/contentId=${lessonIndex}`}
                             key={lessonIndex}
-                          >
+                          > 
                             <div className="flex items-center justify-between p-2 rounded hover:bg-neutral-800">
                               <div className="flex items-center space-x-2">
                                 {lesson.type === "video" ? (

@@ -28,9 +28,10 @@ export const getContentOfCourse = async (id: number) => {
         where: {
             courses: {
                 some: {
-                    courseId: id
+                    courseId: id,
                 }
-            }
+            },
+            type: "folder"
         }
     })
     return content
@@ -102,7 +103,7 @@ export const getCourseContent = async (courseId: number) => {
                     children: true,
                     parent: true,
                     VideoMetaData: true,
-                    NotionMetaData: true
+                    NotionMetaData: true,
                 }
             }
         }

@@ -7,6 +7,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   const body = await req.json();
+
   const {
     type,
     thumbnail,
@@ -22,7 +23,7 @@ export const POST = async (req: NextRequest) => {
     title: string;
     description: string;
     courseId: number;
-    parentContentId: number;
+    parentContentId: any;
     metadata: any;
     adminPassword: string;
   } = body;
