@@ -1,17 +1,19 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { getAllCourses } from "@/lib/db";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-function CourseCard({ title, imageUrl, courseId }: { title: string; imageUrl: string, courseId: number }) { 
+async function CourseCard({ title, imageUrl, courseId }: { title: string; imageUrl: string, courseId: number }) { 
     const router = useRouter();
     return (
       <Card className="overflow-hidden bg-neutral-900 rounded-lg">
         <CardContent className="p-0">
-          <div className="relative  rounded-lg">
+          <div className="relative flex justify-center items-center rounded-lg">
             <img
               alt={`${title} thumbnail`}
-              className=" rounded-lg"
+              className=" rounded-lg h-full"
               src={imageUrl}
               style={{
                 aspectRatio: "16/9",

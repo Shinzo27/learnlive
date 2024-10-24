@@ -90,3 +90,23 @@ export const createPurchase = async (courseId: number, userId: number) => {
     })
     return purchase
 }
+
+export const getCourseContent = async (courseId: number) => {
+    const content = await prisma.courseContent.findMany({
+        where: {
+            courseId
+        },
+        include: {
+            content: {
+                include: {
+                    children: true,
+                    parent: true,
+                    VideoMetaData: true,
+                    NotionMetaData: true
+                }
+            }
+        }
+    })
+    console.log(content);
+    return content
+}

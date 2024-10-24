@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 const page = async() => {
   const allCourses = await getAllCourses()
-
   
   return (
     <div className="flex  items-center min-h-screen flex-col pt-20">

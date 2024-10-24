@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, Pause, Play, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const page = () => {
+const page = ({params}: any) => {
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
   const [comment, setComment] = useState("");
@@ -26,6 +26,11 @@ const page = () => {
       timestamp: "1 day ago",
     },
   ]);
+  
+  const contentId = params.contentId;
+  useEffect(()=>{
+    console.log(contentId)
+  },[])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
