@@ -105,9 +105,9 @@ export const getCourseContent = async (courseId: number) => {
                     VideoMetaData: true,
                     NotionMetaData: true,
                 }
-            }
+            },
+            course: true
         }
     })
-    console.log(content);
     return content
 }
