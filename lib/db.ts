@@ -111,3 +111,18 @@ export const getCourseContent = async (courseId: number) => {
     })
     return content
 }
+
+export const getContentDetails = async(contentId: number) => {
+    const content = await prisma.content.findUnique({
+        where: {
+            id: contentId
+        },
+        include: {
+            children: true,
+            parent: true,
+            VideoMetaData: true,
+            NotionMetaData: true
+        }
+    })
+    return content
+}
