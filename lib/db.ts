@@ -1,7 +1,15 @@
 import { prisma } from '@/lib/prisma'
+import redisClinet from '@/lib/redisClient'
 
 export const getAllCourses = async () => {
+    const cacheKey = 'courses'
+    const cachedCourses = await redisClinet.get(cacheKey)
+    if (cachedCourses) {
+        return JSON.parse(cachedCourses)
+    }
     const courses = await prisma.course.findMany()
+    await redisClinet.setEx(cacheKey, 3600, JSON.stringify(courses))
+    
     return courses
 }
 

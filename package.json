@@ -41,6 +41,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icon-cloud": "^4.1.4",
     "react-notion-x": "^6.16.0",
+    "redis": "^4.7.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.169.0",
