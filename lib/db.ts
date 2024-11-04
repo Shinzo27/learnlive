@@ -23,11 +23,17 @@ export const checkIfUserExists = async (email: string) => {
 }
 
 export const getCourseById = async (id: number) => {
+    const cachekey = `course:${id}`
+    const cachedCourse = await redisClinet.get(cachekey)
+    if (cachedCourse) {
+        return JSON.parse(cachedCourse)
+    }
     const course = await prisma.course.findUnique({
         where: {
             id: id
         }
     })
+    await redisClinet.setEx(cachekey, 3600, JSON.stringify(course))
     return course
 }
 
