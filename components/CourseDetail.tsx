@@ -6,10 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, ChevronRight, Clock, GraduationCap, Star, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
     const [selectedTab, setSelectedTab] = useState("overview");
+    const router = useRouter();
 
     const course = {
       title: "Advanced Web Development with React and Node.js",
@@ -116,7 +118,7 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
             </TabsContent>
           </Tabs>
         </div>
-
+                    {/*  */}
         <div className="md:col-span-1">
           <Card className="bg-neutral-900">
             <CardContent className="p-6 space-y-4">
@@ -130,10 +132,8 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
               />
             </div>
               <div className="text-3xl font-bold text-white">₹{courseDetails.price}</div>
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                <Link href={`/userDetails/${courseDetails.id}`}>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={() => router.push(`/userDetails/${courseDetails.id}`)}>
                   Enroll Now
-                </Link>
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
               <p className="text-sm text-gray-400 text-center">7-days money-back guarantee</p>
