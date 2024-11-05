@@ -3,19 +3,18 @@
 ## Core Features
 
 1. User Management
-   - Student and instructor registration/login (NextAuth)
+   - Student and instructor registration/login (NextAuth)✅
    - Profile management
-   - Role-based access control
+   - Role-based access control✅
 
 2. Course Management
-   - Course creation and editing for instructors
-   - Course catalog and search functionality
-   - Course enrollment and progress tracking for students
+   - Course creation and editing for instructors✅
+   - Course catalog and search functionality✅
+   - Course enrollment ✅ and progress tracking for students
 
 3. Content Delivery
-   - Video lectures (recorded)
+   - Video lectures (recorded) ✅
    - PDF and document uploads
-   - Interactive quizzes and assessments
 
 4. Live Sessions
    - Real-time video streaming for live classes
@@ -25,7 +24,7 @@
 
 5. Discussion Forums
    - Course-specific discussion boards
-   - Q&A sections
+   - Q&A sections ✅
 
 6. Progress Tracking
    - Course completion status
@@ -33,15 +32,14 @@
    - Certificates of completion
 
 7. Payment Integration
-   - Course purchasing
-   - Subscription models
+   - Course purchasing ✅
 
 8. Analytics Dashboard
    - For students: personal progress and performance
-   - For instructors: course engagement and student performance
+   - For instructors: course engagement and student performance ✅
 
 9. Notification System
-   - Email notifications
+   - Email notifications 
    - In-app notifications for upcoming classes, new content, etc.
 
 ## Technical Stack

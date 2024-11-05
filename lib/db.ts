@@ -91,6 +91,13 @@ export const getUserDetails = async (email: string) => {
     const user = await prisma.user.findUnique({
         where: {
             email: email
+        },
+        select: {
+            name: true,
+            email: true,
+            number: true,
+            role: true,
+            profile: true,
         }
     })
     return user
