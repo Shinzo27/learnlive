@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 
 export interface session extends Session {
   user: {
-    id: number;
+    id: string;
     jwtToken: string;
     role: string;
     email: string;
@@ -36,7 +36,6 @@ export const NEXT_AUTH = {
         const user = await prisma.user.findFirst({
           where: {
             email: credentials.email,
-            role: 'USER'
           },
         });
         if (!user) {

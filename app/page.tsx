@@ -1,11 +1,11 @@
 import LandingPage from "@/components/LandingPage";
+import { NEXT_AUTH } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+
 
 export default async function Home() {
-  const session = await getServerSession();
+  const session = await getServerSession(NEXT_AUTH);
 
   session?.user.role === "ADMIN" ? redirect("/admin") : null;
   session?.user.role === "USER" ? redirect("/home") : null;
