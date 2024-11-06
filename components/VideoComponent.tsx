@@ -7,10 +7,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, Pause, Play, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Loader from "@/components/Loader";
+import toast from "react-hot-toast";
 
 const VideoComponent = ({params, contentDetails}: { params: { contentId: string }, contentDetails: any }) => {
-    const router = useRouter();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const router = useRouter();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([
     {
@@ -47,7 +48,37 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
     router.push(`/courseContent/contentId=${lessonId}`);
   };
 
-    return (
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleMarkAsCompleted = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/course/videoProgress/markAsCompleted", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contentId: Number(params.contentId),
+          currentTimestamp: 0,
+          markAsCompleted: true,
+        }),
+      });
+      const data = await response.json();
+      if(data.status === 200) {
+        toast.success("Video marked as completed successfully");
+        router.push('/home');
+      } else {
+        console.log("Error");
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+    return isLoading ? <Loader/> : (
         <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
           <main className="flex-grow container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -63,7 +94,10 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
                         thumbnailAlt="Hero Video"
                       />
                     </div>
-                    <h1 className="text-2xl font-bold">Lesson 1: Introduction to React Hooks</h1>
+                    <div className="flex justify-between">
+                      <h1 className="text-2xl font-bold">Lesson 1: Introduction to React Hooks</h1>
+                      <Button variant="ghost" className="bg-neutral-800 text-white" onClick={()=>handleMarkAsCompleted()}>Mark As Completed</Button>
+                    </div>
                     <Card className="bg-neutral-800">
                       <CardHeader>
                         <CardTitle className="text-lg font-semibold">Comments</CardTitle>
@@ -91,27 +125,6 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
                         </form>
                       </CardContent>
                     </Card>
-                  </CardContent>
-                </Card>
-                <Card className="bg-neutral-900">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold">Lesson Notes</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ScrollArea className="h-[300px] w-full pr-4">
-                      <div className="space-y-4">
-                        <h2 className="text-xl font-semibold">React Hooks Overview</h2>
-                        <p>React Hooks are functions that let you "hook into" React state and lifecycle features from function components. They were introduced in React 16.8 and have since become an integral part of React development.</p>
-                        <h3 className="text-lg font-semibold">Key Hooks:</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li><strong>useState:</strong> Allows you to add state to functional components.</li>
-                          <li><strong>useEffect:</strong> Performs side effects in function components.</li>
-                          <li><strong>useContext:</strong> Subscribes to React context without introducing nesting.</li>
-                          <li><strong>useReducer:</strong> Manages complex state logic in components.</li>
-                        </ul>
-                        <p>In this lesson, we'll dive deep into how these hooks work and when to use them in your React applications.</p>
-                      </div>
-                    </ScrollArea>
                   </CardContent>
                 </Card>
               </div>

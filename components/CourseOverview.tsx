@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCourseContent } from "@/lib/db";
-import { CheckCircle, FileText, PlayCircle } from "lucide-react";
+import { Check, CheckCircle, FileText, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,13 +18,18 @@ import { useEffect, useState } from "react";
 const CourseOverview = ({
   courseId,
   content,
+  userProgress
 }: {
   courseId: number;
   content: any;
+  userProgress: any;
 }) => {
   const [progress, setProgress] = useState(30);
   const router = useRouter();
 
+  useEffect(() => {
+    console.log(userProgress);
+  },[]);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
@@ -71,9 +76,12 @@ const CourseOverview = ({
                                   ) : (
                                     <FileText className="h-5 w-5 text-green-500" />
                                   )}
-                                  <span className="text-white">
-                                    {lesson.title}
-                                  </span>
+                                  <div className="flex items-center">
+                                    <span className="text-white">
+                                      {lesson.title}
+                                    </span>
+                                    {userProgress.find((progress: any) => progress.contentId === lesson.id)?.markAsCompleted === true ? <Check/> : null}
+                                  </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                   <span className="text-sm text-white">

@@ -158,3 +158,23 @@ export const getContentDetails = async(contentId: number) => {
     })
     return content
 }
+
+export const getCourseProgress = async (userId: number, courseId: number) => {
+    const progress = await prisma.videoProgress.findFirst({
+        where: {
+            userId: userId,
+            contentId: courseId
+        }
+    })
+    return progress
+}
+
+export const getProgressOfUser = async (userId: number) => {
+    const progress = await prisma.videoProgress.findMany({
+        where: {
+            userId: userId,
+            markAsCompleted: true
+        }
+    })
+    return progress
+}
