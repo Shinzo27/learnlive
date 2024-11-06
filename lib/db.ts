@@ -98,7 +98,12 @@ export const getUserDetails = async (email: string) => {
             number: true,
             role: true,
             profile: true,
-        }
+            purchases: {
+                select: {
+                    course: true
+                }
+            }
+        },
     })
     return user
 }

@@ -7,10 +7,10 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { GraduationCap, Book, Award, Clock, Calendar, Github, Linkedin, Twitter, Globe } from "lucide-react"
+import { GraduationCap, Book, Award, Clock, Calendar, Github, Linkedin, Twitter, Globe, BookOpen } from "lucide-react"
 import Link from 'next/link';
 
-const Profile = ({ student, studentDetails }: { student: any, studentDetails: any }) => {
+const Profile = ({ student }: { student: any }) => {
       const enrolledCourses = [
         { id: 1, title: "Advanced React Patterns", progress: 80 },
         { id: 2, title: "Machine Learning Fundamentals", progress: 60 },
@@ -26,7 +26,7 @@ const Profile = ({ student, studentDetails }: { student: any, studentDetails: an
       ]
 
       useEffect(()=>{
-        console.log(studentDetails);
+        console.log(student);
       }, [])
 
     return (
@@ -63,23 +63,19 @@ const Profile = ({ student, studentDetails }: { student: any, studentDetails: an
                 <p className="text-sm text-gray-300 mb-4">{student.bio}</p>
                 <div className="flex items-center text-sm text-gray-400 mb-2">
                   <Calendar className="mr-2 h-4 w-4" />
-                  Joined on {student.joinDate}
+                  Joined on 05/10/2024
                 </div>
-                <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="grid grid-cols-2 gap-4 mt-4 pt-7">
                   <div className="text-center">
-                    <p className="text-2xl font-bold">{student.coursesEnrolled}</p>
+                    <p className="text-2xl font-bold">{student.purchases.length}</p>
                     <p className="text-sm text-gray-400">Courses Enrolled</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold">{student.coursesCompleted}</p>
+                    <p className="text-2xl font-bold">0</p>
                     <p className="text-sm text-gray-400">Courses Completed</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold">{student.totalHoursLearned}</p>
-                    <p className="text-sm text-gray-400">Hours Learned</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold">{student.certificates}</p>
+                    <p className="text-2xl font-bold">0</p>
                     <p className="text-sm text-gray-400">Certificates Earned</p>
                   </div>
                 </div>
@@ -87,52 +83,21 @@ const Profile = ({ student, studentDetails }: { student: any, studentDetails: an
             </Card>
           </div>
           <div className="lg:col-span-2">
-            <Tabs defaultValue="courses" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="courses">Enrolled Courses</TabsTrigger>
-                <TabsTrigger value="achievements">Achievements</TabsTrigger>
-              </TabsList>
-              <TabsContent value="courses">
-                <Card className="bg-neutral-900">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold">Enrolled Courses</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {enrolledCourses.map((course) => (
-                        <div key={course.id} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <p className="font-medium">{course.title}</p>
-                            <span className="text-sm text-gray-400">{course.progress}%</span>
-                          </div>
-                          <Progress value={course.progress} className="w-full" />
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              <TabsContent value="achievements">
-                <Card className="bg-neutral-900">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold">Achievements</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {achievements.map((achievement) => (
-                        <div key={achievement.id} className="flex items-start space-x-4">
-                          <Award className="h-6 w-6 text-yellow-500 mt-1" />
-                          <div>
-                            <p className="font-medium">{achievement.title}</p>
-                            <p className="text-sm text-gray-400">{achievement.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+            <Card className="bg-neutral-900">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold">Enrolled Courses</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {student.purchases.map((course:any) => (
+                    <li key={course.id} className="flex items-center space-x-2">
+                      <BookOpen className="h-5 w-5 text-blue-500" />
+                      <span>{course.course.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>

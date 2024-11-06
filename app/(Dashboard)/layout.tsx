@@ -9,12 +9,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default async (props: Props) => {
-  const session = await getServerSession(NEXT_AUTH);
+export default (props: Props) => {
 
-  if(!session?.user) { 
-    return redirect('/');
-  }
   return (
     <div className=" min-h-screen w-full">
       <DashboardLayout>

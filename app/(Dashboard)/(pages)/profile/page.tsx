@@ -21,7 +21,7 @@ const page = async() => {
   }
 
   return (
-    <Profile student={student} studentDetails={getDetails}/>
+    <Profile student={getDetails}/>
   );
 };
 
