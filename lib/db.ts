@@ -153,7 +153,8 @@ export const getContentDetails = async(contentId: number) => {
             children: true,
             parent: true,
             VideoMetaData: true,
-            NotionMetaData: true
+            NotionMetaData: true,
+            videoProgress: true
         }
     })
     return content

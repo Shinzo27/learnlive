@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronLeft, ChevronRight, Pause, Play, Send } from "lucide-react";
+import { Badge, ChevronLeft, ChevronRight, CircleCheck, CircleCheckIcon, Pause, Play, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loader from "@/components/Loader";
@@ -50,6 +50,10 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    console.log(contentDetails);
+  },[])
+
   const handleMarkAsCompleted = async () => {
     try {
       setIsLoading(true);
@@ -94,9 +98,13 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
                         thumbnailAlt="Hero Video"
                       />
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <h1 className="text-2xl font-bold">Lesson 1: Introduction to React Hooks</h1>
-                      <Button variant="ghost" className="bg-neutral-800 text-white" onClick={()=>handleMarkAsCompleted()}>Mark As Completed</Button>
+                      {
+                        contentDetails.videoProgress && contentDetails.videoProgress[0].markAsCompleted === true ?
+                        <CircleCheckIcon className="text-blue-500" size={30} /> :
+                        <Button variant="ghost" className="bg-neutral-800 text-white" onClick={()=>handleMarkAsCompleted()}>Mark As Completed</Button>
+                      }
                     </div>
                     <Card className="bg-neutral-800">
                       <CardHeader>

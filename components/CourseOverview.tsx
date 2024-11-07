@@ -76,11 +76,13 @@ const CourseOverview = ({
                                   ) : (
                                     <FileText className="h-5 w-5 text-green-500" />
                                   )}
-                                  <div className="flex items-center">
-                                    <span className="text-white">
+                                  <div className="flex items-center justify-between space-x-4">
+                                    <div className="text-white">
                                       {lesson.title}
-                                    </span>
-                                    {userProgress.find((progress: any) => progress.contentId === lesson.id)?.markAsCompleted === true ? <Check/> : null}
+                                    </div>
+                                    <div className="">
+                                      {userProgress.find((progress: any) => progress.contentId === lesson.id)?.markAsCompleted === true ? <Check className="text-blue-500 rounded-sm"/> : null}
+                                    </div>
                                   </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
