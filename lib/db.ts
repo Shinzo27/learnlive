@@ -87,6 +87,18 @@ export const checkIfNumberExists = async (number: string, courseId: number) => {
     return user
 }
 
+export const getUserId = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            id: true
+        }
+    })
+    return user
+}
+
 export const getUserDetails = async (email: string) => {
     const cacheKey = 'userDetails'
     const cachedCourses = await redisClinet.get(cacheKey)
@@ -98,6 +110,7 @@ export const getUserDetails = async (email: string) => {
             email: email
         },
         select: {
+            id: true,
             name: true,
             email: true,
             number: true,
@@ -105,7 +118,7 @@ export const getUserDetails = async (email: string) => {
             profile: true,
             purchases: {
                 select: {
-                    course: true
+                    courseId: true
                 }
             }
         },
