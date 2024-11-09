@@ -13,7 +13,7 @@ import { getCourseContent } from "@/lib/db";
 import { Check, CheckCircle, FileText, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const CourseOverview = ({
   courseId,
@@ -31,8 +31,8 @@ const CourseOverview = ({
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 sm:gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <h1 className="text-3xl font-bold">{content[0].course.title}</h1>
-            <p className="text-white">{content[0].course.description}</p>
+            <h1 className="text-3xl font-bold">{content[0]?.course?.title}</h1>
+            <p className="text-white">{content[0]?.course?.description}</p>
             <div className="flex items-center space-x-4">
               <p className="text-sm text-white">Instructor: Pratham Patel</p>
               <p className="text-sm text-white">Duration: 10 weeks</p>
