@@ -11,6 +11,10 @@ export const POST = async (req: NextRequest) => {
         const description = formData.get('description') as string;
         const price = parseFloat(formData.get('price') as string);
         const imageFile = formData.get('imageUrl') as File;
+        const overview = formData.get('overview') as string;
+        const instructor = formData.get('instructor') as string;
+        const duration = parseInt(formData.get('duration') as string);
+        const curriculum = formData.get('curriculum') as string;
 
         const fileBuffer = await imageFile.arrayBuffer();
 
@@ -20,11 +24,17 @@ export const POST = async (req: NextRequest) => {
 
         const fileUri = "data:" + mimeType + ";" + encoding + "," + imageBase64;
 
+        const curriculumJson = JSON.parse(curriculum);
+
         const payload = {
             title,
             description,
             price,
             imageUrl: imageFile ? imageFile.name : null,
+            overview,
+            instructor,
+            duration,
+            curriculum: curriculumJson,
         }
 
         console.log(payload);
@@ -47,7 +57,6 @@ export const POST = async (req: NextRequest) => {
             }
         }
 
-
         const ifExists = await prisma.course.findFirst({
             where: {
                 title: parsedPayload.data.title,
@@ -64,6 +73,10 @@ export const POST = async (req: NextRequest) => {
                 description: parsedPayload.data.description,
                 price: parsedPayload.data.price,
                 imageUrl: imageUrl,
+                overview: parsedPayload.data.overview,
+                instructor: parsedPayload.data.instructor,
+                duration: parsedPayload.data.duration,
+                curriculum: parsedPayload.data.curriculum,
             }
         });
         

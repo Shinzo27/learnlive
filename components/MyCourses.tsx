@@ -33,7 +33,7 @@ const MyCourses = ({ courses }: any) => {
                   <div className="relative flex justify-center items-center rounded-lg">
                     <img
                       alt={`${course.course.title} thumbnail`}
-                      className=" rounded-lg h-full"
+                      className=" rounded-lg h-full w-full object-cover"
                       src={course.course.imageUrl}
                       style={{
                         aspectRatio: "16/9",

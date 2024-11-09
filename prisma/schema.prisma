@@ -45,6 +45,10 @@ model Course {
   description     String
   price           Float
   imageUrl        String
+  overview        String
+  instructor      String
+  duration        Int
+  curriculum      Json
   content         CourseContent[]
   purchasedBy     UserPurchases[]
   certificate     Certificate[]

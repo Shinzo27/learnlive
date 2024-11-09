@@ -25,11 +25,6 @@ const CourseOverview = ({
   userProgress: any;
 }) => {
   const [progress, setProgress] = useState(30);
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log(userProgress);
-  },[]);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">

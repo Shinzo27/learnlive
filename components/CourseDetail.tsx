@@ -46,7 +46,7 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
           <div className="flex flex-wrap gap-4">
             <Badge variant="secondary" className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {course.duration}
+              {courseDetails.duration} Weeks
             </Badge>
             <Badge variant="secondary" className="flex items-center gap-1">
               <BarChart className="h-4 w-4" />
@@ -71,12 +71,8 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
             <TabsContent value="overview" className="mt-4">
               <Card className="bg-neutral-900">
                 <CardContent className="p-6 text-white">
-                  <h2 className="text-xl font-semibold mb-4">What you'll learn</h2>
-                  <ul className="list-disc pl-5 space-y-2">
-                    {course.topics.map((topic, index) => (
-                      <li key={index}>{topic}</li>
-                    ))}
-                  </ul>
+                  <h2 className="text-xl font-semibold mb-4">Course Overview</h2>
+                  {courseDetails.overview}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -84,18 +80,15 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
               <Card className="bg-neutral-900">
                 <CardContent className="p-6 text-white">
                   <h2 className="text-xl font-semibold mb-4">Course Curriculum</h2>
-                  <ol className="list-decimal pl-5 space-y-2">
-                    <li>Introduction to React and Node.js</li>
-                    <li>Setting up the Development Environment</li>
-                    <li>React Fundamentals and Hooks</li>
-                    <li>Node.js and Express Basics</li>
-                    <li>Building RESTful APIs</li>
-                    <li>Database Integration with MongoDB</li>
-                    <li>Authentication and Authorization</li>
-                    <li>Advanced React Patterns</li>
-                    <li>Deployment and DevOps</li>
-                    <li>Final Project and Code Review</li>
-                  </ol>
+                  {
+                    courseDetails.curriculum.map((module: any, index: number) => ((
+                      <div key={index}>
+                        <ul className="list-disc pl-5 space-y-2">
+                          <li>{module.title}</li>
+                        </ul>
+                      </div>
+                    )))
+                  }
                 </CardContent>
               </Card>
             </TabsContent>
@@ -110,7 +103,7 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
                     className="rounded-full h-20 object-cover"
                   />
                   <div>
-                    <h2 className="text-xl font-semibold mb-2">{course.instructor.name}</h2>
+                    <h2 className="text-xl font-semibold mb-2">{courseDetails.instructor}</h2>
                     <p>{course.instructor.bio}</p>
                   </div>
                 </CardContent>
@@ -142,7 +135,7 @@ const CourseDetail = ({ courseDetails }: { courseDetails: any }) => {
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li className="flex items-center">
                     <Clock className="mr-2 h-4 w-4" />
-                    10 weeks of content
+                    {courseDetails.duration} weeks of content
                   </li>
                   <li className="flex items-center">
                     <Users className="mr-2 h-4 w-4" />

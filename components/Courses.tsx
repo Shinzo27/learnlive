@@ -13,7 +13,7 @@ async function CourseCard({ title, imageUrl, courseId }: { title: string; imageU
           <div className="relative flex justify-center items-center rounded-lg">
             <img
               alt={`${title} thumbnail`}
-              className=" rounded-lg h-full"
+              className=" rounded-lg h-full w-full object-cover"
               src={imageUrl}
               style={{
                 aspectRatio: "16/9",

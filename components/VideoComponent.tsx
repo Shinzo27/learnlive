@@ -99,9 +99,9 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <h1 className="text-2xl font-bold">Lesson 1: Introduction to React Hooks</h1>
+                      <h1 className="text-2xl font-bold">{contentDetails.title}</h1>
                       {
-                        contentDetails.videoProgress && contentDetails.videoProgress[0].markAsCompleted === true ?
+                        contentDetails.videoProgress && contentDetails?.videoProgress[0]?.markAsCompleted === true ?
                         <CircleCheckIcon className="text-blue-500" size={30} /> :
                         <Button variant="ghost" className="bg-neutral-800 text-white" onClick={()=>handleMarkAsCompleted()}>Mark As Completed</Button>
                       }

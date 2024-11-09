@@ -11,4 +11,10 @@ export const courseSchema = z.object({
     description: z.string(),
     price: z.number(),
     imageUrl: z.string(),
+    overview: z.string(),
+    instructor: z.string(),
+    duration: z.number(),
+    curriculum: z.array(z.object({
+        title: z.string(),
+    }))
 })

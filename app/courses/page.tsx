@@ -12,7 +12,7 @@ const page = async() => {
             <h1 className="text-4xl font-bold text-center">All courses</h1>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 p-5">
-        {allCourses.map((course, index) => (
+        {allCourses.map((course: any, index: number) => (
           <CourseCard courseId={course.id} key={index} title={course.title} imageUrl={course.imageUrl} />
         ))}
       </div>
