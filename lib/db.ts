@@ -1,14 +1,14 @@
 import { prisma } from '@/lib/prisma'
-import redisClinet from '@/lib/redisClient'
+import redisClient from '@/lib/redisClient'
 
 export const getAllCourses = async () => {
     const cacheKey = 'courses'
-    const cachedCourses = await redisClinet.get(cacheKey)
+    const cachedCourses = await redisClient.get(cacheKey)
     if (cachedCourses) {
         return JSON.parse(cachedCourses)
     }
     const courses = await prisma.course.findMany()
-    await redisClinet.setEx(cacheKey, 3600, JSON.stringify(courses))
+    await redisClient.setEx(cacheKey, 3600, JSON.stringify(courses))
     
     return courses
 }
@@ -24,7 +24,7 @@ export const checkIfUserExists = async (email: string) => {
 
 export const getCourseById = async (id: number) => {
     const cachekey = `course:${id}`
-    const cachedCourse = await redisClinet.get(cachekey)
+    const cachedCourse = await redisClient.get(cachekey)
     if (cachedCourse) {
         return JSON.parse(cachedCourse)
     }
@@ -33,7 +33,7 @@ export const getCourseById = async (id: number) => {
             id: id
         }
     })
-    await redisClinet.setEx(cachekey, 3600, JSON.stringify(course))
+    await redisClient.setEx(cachekey, 3600, JSON.stringify(course))
     return course
 }
 
@@ -101,7 +101,7 @@ export const getUserId = async (email: string) => {
 
 export const getUserDetails = async (email: string) => {
     const cacheKey = 'userDetails'
-    const cachedCourses = await redisClinet.get(cacheKey)
+    const cachedCourses = await redisClient.get(cacheKey)
     if (cachedCourses) {
         return JSON.parse(cachedCourses)
     }
@@ -123,7 +123,7 @@ export const getUserDetails = async (email: string) => {
             }
         },
     })
-    await redisClinet.setEx(cacheKey, 3600, JSON.stringify(user))
+    await redisClient.setEx(cacheKey, 3600, JSON.stringify(user))
     return user
 }
 
@@ -149,6 +149,7 @@ export const getCourseContent = async (courseId: number) => {
                     parent: true,
                     VideoMetaData: true,
                     NotionMetaData: true,
+                    bookmark: true
                 }
             },
             course: true
@@ -167,7 +168,8 @@ export const getContentDetails = async(contentId: number) => {
             parent: true,
             VideoMetaData: true,
             NotionMetaData: true,
-            videoProgress: true
+            videoProgress: true,
+            bookmark: true
         }
     })
     return content
@@ -191,4 +193,22 @@ export const getProgressOfUser = async (userId: number) => {
         }
     })
     return progress
+}
+
+export const getUserBookmarks = async (userId: number) => {
+    const cacheKey = `bookmarks:${userId}`
+    const cachedBookmarks = await redisClient.get(cacheKey)
+    if (cachedBookmarks) {
+        return JSON.parse(cachedBookmarks)
+    }
+    const bookmarks = await prisma.bookmark.findMany({
+        where: {
+            userId: userId
+        },
+        include: {
+            content: true
+        }
+    })
+    await redisClient.setEx(cacheKey, 3600, JSON.stringify(bookmarks))
+    return bookmarks
 }

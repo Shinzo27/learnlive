@@ -4,13 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge, ChevronLeft, ChevronRight, CircleCheck, CircleCheckIcon, Pause, Play, Send } from "lucide-react";
+import { Badge, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, CircleCheck, CircleCheckIcon, Pause, Play, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loader from "@/components/Loader";
 import toast from "react-hot-toast";
 
-const VideoComponent = ({params, contentDetails}: { params: { contentId: string }, contentDetails: any }) => {
+const VideoComponent = ({params, contentDetails, userId}: { params: { contentId: string }, contentDetails: any, userId: number }) => {
   const router = useRouter();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([
@@ -27,6 +27,7 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
       timestamp: "1 day ago",
     },
   ]);
+  const [bookmark, setBookmark] = useState(false);
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +54,34 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
   useEffect(() => {
     console.log(contentDetails);
   },[])
+
+  const handleBookmark = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/bookmark", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contentId: Number(params.contentId),
+          userId: userId,
+        }),
+      });
+      const data = await response.json();
+      console.log(data); 
+      if(data.status === 200) {
+        toast.success("Bookmarked successfully");
+        router.push('/home');
+      } else {
+        console.log("Error");
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleMarkAsCompleted = async () => {
     try {
@@ -88,7 +117,7 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
                 <Card className="bg-neutral-900">
-                  <CardContent className="p-6 space-y-6">
+                  <CardContent className="p-6 space-y-6 ">
                     <div className="relative aspect-video bg-neutral-800 rounded-lg overflow-hidden">
                       <HeroVideoDialog
                         className="hidden dark:block"
@@ -98,13 +127,18 @@ const VideoComponent = ({params, contentDetails}: { params: { contentId: string 
                         thumbnailAlt="Hero Video"
                       />
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                       <h1 className="text-2xl font-bold">{contentDetails.title}</h1>
+                      <div className="flex items-center gap-2">
                       {
                         contentDetails.videoProgress && contentDetails?.videoProgress[0]?.markAsCompleted === true ?
                         <CircleCheckIcon className="text-blue-500" size={30} /> :
                         <Button variant="ghost" className="bg-neutral-800 text-white" onClick={()=>handleMarkAsCompleted()}>Mark As Completed</Button>
                       }
+                      {
+                        contentDetails.bookmark.length > 0 ? <BookmarkCheck className="text-blue-500"/> : <Bookmark className="text-blue-500 cursor-pointer" onClick={handleBookmark}/>
+                      }
+                      </div>
                     </div>
                     <Card className="bg-neutral-800">
                       <CardHeader>

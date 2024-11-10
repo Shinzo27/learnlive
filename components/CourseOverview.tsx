@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCourseContent } from "@/lib/db";
-import { Check, CheckCircle, FileText, PlayCircle } from "lucide-react";
+import { Bookmark, BookmarkCheck, Check, CheckCircle, FileText, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
@@ -25,6 +25,7 @@ const CourseOverview = ({
   userProgress: any;
 }) => {
   const [progress, setProgress] = useState(30);
+  const [bookmark, setBookmark] = useState(true);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
@@ -75,8 +76,9 @@ const CourseOverview = ({
                                     <div className="text-white">
                                       {lesson.title}
                                     </div>
-                                    <div className="">
+                                    <div className="flex items-center gap-2">
                                       {userProgress.find((progress: any) => progress.contentId === lesson.id)?.markAsCompleted === true ? <Check className="text-blue-500 rounded-sm"/> : null}
+                                      {/* {bookmark === true ? <BookmarkCheck className="text-blue-500"/> : <Bookmark className="text-blue-500"/>} */}
                                     </div>
                                   </div>
                                 </div>
