@@ -9,7 +9,7 @@ const page = async() => {
   const userId = session?.user?.id
   const bookmarks = await getUserBookmarks(userId)
   return (
-    <BookmarkComponent userBookmarks={bookmarks} />
+    <BookmarkComponent userBookmarks={bookmarks} userId={userId}/>
   );
 };
 

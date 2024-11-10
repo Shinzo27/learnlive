@@ -196,11 +196,6 @@ export const getProgressOfUser = async (userId: number) => {
 }
 
 export const getUserBookmarks = async (userId: number) => {
-    const cacheKey = `bookmarks:${userId}`
-    const cachedBookmarks = await redisClient.get(cacheKey)
-    if (cachedBookmarks) {
-        return JSON.parse(cachedBookmarks)
-    }
     const bookmarks = await prisma.bookmark.findMany({
         where: {
             userId: userId
@@ -209,6 +204,5 @@ export const getUserBookmarks = async (userId: number) => {
             content: true
         }
     })
-    await redisClient.setEx(cacheKey, 3600, JSON.stringify(bookmarks))
     return bookmarks
 }

@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-    const { id }: any = await req.json()
-    console.log("content" + id);  
+    const { id, userId }: any = await req.json()
+    console.log("content id" + id);
     if (!id) {
         return NextResponse.json({
             status: 400,
@@ -68,7 +68,7 @@ export async function DELETE(req: NextRequest) {
         console.log(error)
         return NextResponse.json({
             status: 500,
-            message: "Error"
+            message: error
         })
     }
 }
